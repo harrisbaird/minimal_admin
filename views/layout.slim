@@ -1,0 +1,23 @@
+doctype html
+html
+  head
+    meta content="text/html; charset=UTF-8" http-equiv="Content-Type"
+    meta charset="utf-8"
+    meta content="IE=edge" http-equiv="X-UA-Compatible"
+    meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"
+    title
+      ==> yield_content :title
+      ' -
+      = main_title
+    == yield_content :stylesheets
+    == yield_content :javascripts
+  body
+    == slim :header, locals: { current_dashboard: dashboard, current_action: action }
+    == yield_content :action_header
+
+    div.container-fluid
+      .row
+        div.col-sm-12
+          h1 == yield_content :title
+          == slim :flash
+          == yield

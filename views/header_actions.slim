@@ -1,0 +1,6 @@
+.navbar.navbar-light.bg-faded.action-bar
+  ul.nav.navbar-nav
+    - dashboard.actions_for(type).each do |nav_action|
+      li.nav-item
+        a.nav-link href=(path_for(dashboard, nav_action, record_id)) class=('active' if action == nav_action)
+          = nav_action.label

@@ -1,0 +1,4 @@
+- { success: 'success', warning: 'warning', error: 'danger'}.each do |key, css_class|
+  - if flash.has?(key)
+    div.alert role="alert" class="alert-#{css_class}"
+      = flash[key]

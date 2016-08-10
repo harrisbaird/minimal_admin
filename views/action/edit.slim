@@ -1,0 +1,7 @@
+- content_for :title do
+  == title_for('Edit', record)
+
+- content_for :action_header do
+  == render_action_header(dashboard, action, record.id)
+
+== slim :form, locals: locals

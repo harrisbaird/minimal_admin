@@ -1,0 +1,6 @@
+.navbar.navbar-dark.bg-inverse.navbar-fixed-top
+  ul.nav.navbar-nav
+    a.navbar-brand href="/" = main_title
+    - MinimalAdmin.dashboards.each do |dashboard|
+      li.nav-item class=('active' if dashboard == current_dashboard)
+        a.nav-link href=(path_for(dashboard, :index)) = dashboard.label

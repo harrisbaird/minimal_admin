@@ -1,0 +1,3 @@
+select.association.form-control data={model:(adapter.association_class(name))} name=(form_field_name(name)) id=(form_field_id(name)) required=(required) placeholder="Select a #{field_label(field, name).singularize}"
+  - if value.present?
+    option selected=(true) value=(value.id) = record_label(value)
