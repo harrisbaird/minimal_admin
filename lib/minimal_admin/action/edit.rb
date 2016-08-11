@@ -6,8 +6,7 @@ module MinimalAdmin
       end
 
       def controller(app)
-        record = @dashboard.adapter.find(app.params[:id])
-        super(app, record)
+        render(app, record: find_record(app))
       end
     end
   end

@@ -68,6 +68,14 @@ module MinimalAdmin
       def template_path
         "action/#{resource_name}".to_sym
       end
+
+      def find_record(app)
+        record = @dashboard.adapter.find(app.params[:id])
+        return record unless record.nil?
+
+        app.flash[:error] = "#{@dashboard.label} with id '#{app.params[:id]}' could not be found"
+        app.redirect(app.path_for(@dashboard, :index))
+      end
     end
   end
 end

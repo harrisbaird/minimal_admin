@@ -23,6 +23,22 @@ module MinimalAdmin
       end
     end
 
+    not_found do
+      status 404
+      flash[:error] = "#{request.path} could not be found"
+      redirect '/'
+    end
+
+    error do
+      flash[:error] = 'An error occured: ' + env['sinatra.error'].message
+      redirect '/'
+    end
+
+    get '/' do
+      # TODO: Are any dashboards defined?
+      redirect(path_for(MinimalAdmin.dashboards.first, :index))
+    end
+
     get '/autocomplete/association' do
       model = params['model'].constantize
       adapter = MinimalAdmin::Adapter::Sequel.new(model)

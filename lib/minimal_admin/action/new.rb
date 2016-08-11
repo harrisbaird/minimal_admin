@@ -6,8 +6,7 @@ module MinimalAdmin
       end
 
       def controller(app)
-        record = @dashboard.adapter.new
-        super(app, record)
+        super(app, record: @dashboard.adapter.new)
       end
     end
   end

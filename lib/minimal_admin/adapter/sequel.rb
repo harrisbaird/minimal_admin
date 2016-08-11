@@ -1,7 +1,10 @@
+require 'sequel'
+
 module MinimalAdmin
   module Adapter
     class Sequel
       SEARCH_TYPES = [:integer, :string].freeze
+      MISSING_RECORD_EXCEPTION = ::Sequel::NoMatchingRow
 
       def initialize(model)
         @model = model
