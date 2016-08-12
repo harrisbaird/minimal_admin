@@ -12,12 +12,13 @@ html
     == yield_content :stylesheets
     == yield_content :javascripts
   body
-    == slim :header, locals: { current_dashboard: dashboard, current_action: action }
+    == slim :'application/header', locals: { current_dashboard: dashboard, current_action: action }
     == yield_content :action_header
 
     div.container-fluid
       .row
         div.col-sm-12
-          h1 == yield_content :title
-          == slim :flash
+          - if content_for?(:title)
+            h1 == yield_content :title
+          == slim :'application/flash'
           == yield

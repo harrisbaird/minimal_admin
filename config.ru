@@ -37,9 +37,9 @@ class Post < Sequel::Model
   end
 end
 
-user = User.create(name: 'Test User')
-100.times.each { |i| User.create(name: "Test User #{i}") }
-100.times.each { |i| Post.create(name: 'abc', user: user) }
+DB[:users].import([:id, :name], Array.new(1000) { |i| [i, "Test User #{i}"] })
+user_ids = User.select_map(:id)
+DB[:posts].import([:id, :name, :user_id], Array.new(1000) { |i| [i, "Test Post #{i}", user_ids.sample] })
 
 class PostDashboard < MinimalAdmin::BaseDashboard
   MODEL = Post
@@ -50,7 +50,7 @@ class PostDashboard < MinimalAdmin::BaseDashboard
     name: Field::String.new,
     count: Field::Integer.new,
     color: Field::Color.new,
-    active: Field::Boolean.new,
+    active: Field::Boolean.new
   }.freeze
 
   SHOW_FIELDS = INDEX_FIELDS.merge(

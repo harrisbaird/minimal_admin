@@ -8,11 +8,10 @@ module MinimalAdmin
 
       def initialize(model)
         @model = model
-        # TODO: set eager load array here from dashboard
       end
 
-      def all
-        @model.all
+      def all(eager = nil)
+        eager ? @model.eager(eager).all : @model.all
       end
 
       def find(id)
@@ -21,6 +20,10 @@ module MinimalAdmin
 
       def new(*args)
         @model.new(*args)
+      end
+
+      def associations
+        @model.associations
       end
 
       def association_class(name)

@@ -12,7 +12,7 @@ module MinimalAdmin
       end
 
       def template_path(action)
-        :inline_records
+        :'application/inline_records'
       end
 
       def render_in_card_block?

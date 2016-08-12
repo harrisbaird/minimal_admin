@@ -1,4 +1,6 @@
 - content_for :action_header do
   == render_action_header(dashboard, action)
 
-== slim :inline_records, locals: locals.merge(hide_actions: false)
+== slim :'application/pagination', locals: { dataset: dataset }
+== slim :'application/inline_records', locals: locals.merge(hide_actions: false)
+== slim :'application/pagination', locals: { dataset: dataset }

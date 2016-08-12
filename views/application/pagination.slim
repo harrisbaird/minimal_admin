@@ -1,0 +1,9 @@
+.row
+  .col-sm-2
+    a.btn.btn-link.btn-sm href=(pagination_path(dataset.prev_page)) class=('disabled' if dataset.first_page?)
+      | Previous
+  .col-sm-8.text-xs-center.pagination-info
+    = pagination_info(dataset)
+  .col-sm-2.text-xs-right
+    a.btn.btn-link.btn-sm href=(pagination_path(dataset.next_page)) class=('disabled' if dataset.last_page?)
+      | Next

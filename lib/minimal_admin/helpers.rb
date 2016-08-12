@@ -48,7 +48,7 @@ module MinimalAdmin
 
     def render_action_header(dashboard, action, record_id = nil)
       type = record_id.present? ? :record : :collection
-      slim :header_actions, locals: {
+      slim :'application/header_actions', locals: {
         dashboard: dashboard,
         action: action,
         type: type,
@@ -62,6 +62,19 @@ module MinimalAdmin
 
     def form_field_id(name)
       "field_#{name}"
+    end
+
+    def pagination_path(page)
+      uri = URI.parse(request.path)
+      uri.query = params.symbolize_keys.merge(page: page).to_query
+      uri.to_s
+    end
+
+    def pagination_info(dataset)
+      start = dataset.current_page_record_range.first
+      finish = dataset.current_page_record_range.last
+      total = dataset.pagination_record_count
+      "Showing #{start} to #{finish} of #{total}"
     end
   end
 end

@@ -1,5 +1,6 @@
 body {
   padding-top: 50px;
+  margin-bottom: 100px;
 }
 
 .selectize-control::before {
@@ -24,6 +25,10 @@ body {
 
 .action-bar {
   margin-bottom: 20px;
+}
+
+.card.inline_association_type table {
+  margin-bottom: 0;
 }
 
 .color_type .wrapper {

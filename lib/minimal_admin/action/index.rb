@@ -18,7 +18,13 @@ module MinimalAdmin
       end
 
       def controller(app)
-        render(app, records: @dashboard.adapter.all)
+        page = (app.params[:page] || 1).to_i
+        dataset = @dashboard.model.dataset
+        dataset = dataset.extension(:pagination)
+        dataset = dataset.paginate(page, 100)
+
+        render(app, records: dataset.eager(eager_load_fields).all,
+                    dataset: dataset)
       end
     end
   end

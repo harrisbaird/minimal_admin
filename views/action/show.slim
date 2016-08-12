@@ -10,6 +10,6 @@
       div.card class="#{name}_field #{field.resource_name}_type"
         div class="card-header" = field_label(field, name)
         - if field.render_in_card_block?
-          div.card-block == field.render(self, name, record, locals)
+          div.card-block == field.render(self, name, record, locals.except(:dashboard))
         - else
-          == field.render(self, name, record, locals)
+          == field.render(self, name, record, locals.except(:dashboard))

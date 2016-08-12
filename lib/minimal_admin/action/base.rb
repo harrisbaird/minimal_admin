@@ -76,6 +76,10 @@ module MinimalAdmin
         app.flash[:error] = "#{@dashboard.label} with id '#{app.params[:id]}' could not be found"
         app.redirect(app.path_for(@dashboard, :index))
       end
+
+      def eager_load_fields
+        @fields.keys & @dashboard.model.associations
+      end
     end
   end
 end
