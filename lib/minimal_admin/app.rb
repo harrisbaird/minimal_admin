@@ -18,6 +18,11 @@ module MinimalAdmin
     use Rack::MethodOverride
     use Rack::Deflater
 
+    def self.new(*)
+      setup_routes
+      super
+    end
+
     def self.setup_routes
       MinimalAdmin.dashboards.each do |dashboard|
         dashboard.setup_routes(self)
