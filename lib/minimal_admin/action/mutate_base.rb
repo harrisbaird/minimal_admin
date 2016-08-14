@@ -9,7 +9,8 @@ module MinimalAdmin
         [:get, :put]
       end
 
-      def controller(app, record)
+      def controller(app)
+        record = app.instance_variable_get('@record')
         if app.request.put?
           app.params['form'].each do |k, v|
             v = fields[k.to_sym].parse_value(record, k, v)
@@ -26,8 +27,6 @@ module MinimalAdmin
             app.flash[:error] = "Invalid data"
           end
         end
-
-        render(app, record: record)
       end
     end
   end

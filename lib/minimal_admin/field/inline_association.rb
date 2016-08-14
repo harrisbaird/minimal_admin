@@ -11,10 +11,6 @@ module MinimalAdmin
         render_template(app, name, record, options)
       end
 
-      def template_path(action)
-        :'application/inline_records'
-      end
-
       def render_in_card_block?
         false
       end

@@ -14,19 +14,6 @@ module MinimalAdmin
       raise("Missing dashboard for #{model}")
   end
 
-  def self.path_for(dashboard, action, record_id = nil)
-    action = dashboard.find_action(action) if action.is_a?(Symbol)
-    route = case action.type
-            when :root
-              [action.route]
-            when :collection
-              [dashboard.resource_name, action.route]
-            when :record
-              [dashboard.resource_name, record_id, action.route]
-            end.compact
-    '/' + route.join('/')
-  end
-
   def self.configure
     yield(configuration)
   end
@@ -37,6 +24,7 @@ module MinimalAdmin
 end
 
 require 'minimal_admin/base_dashboard'
+require 'minimal_admin/routing'
 
 require 'minimal_admin/adapter/sequel'
 

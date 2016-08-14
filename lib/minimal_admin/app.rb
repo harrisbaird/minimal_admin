@@ -8,6 +8,7 @@ module MinimalAdmin
   class App < Sinatra::Base
     helpers Sinatra::ContentFor
     helpers MinimalAdmin::Helpers
+    helpers MinimalAdmin::Routing
 
     set :public_folder, File.join(root, '..', '..', 'public')
     set :views, File.join(root, '..', '..', 'views')
@@ -29,14 +30,18 @@ module MinimalAdmin
       redirect '/'
     end
 
+    error Sequel::NoMatchingRow do
+      flash[:error] = "#{@dashboard.label} could not be found"
+      redirect(path_for_model(@dashboard.model, :index))
+    end
+
     error do
       flash[:error] = 'An error occured: ' + env['sinatra.error'].message
       redirect '/'
     end
 
     get '/' do
-      # TODO: Are any dashboards defined?
-      redirect(path_for(MinimalAdmin.dashboards.first, :index))
+      redirect(path_for_dashboard(MinimalAdmin.dashboards.first, :index))
     end
 
     get '/autocomplete/association' do

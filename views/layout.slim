@@ -12,8 +12,8 @@ html
     == yield_content :stylesheets
     == yield_content :javascripts
   body
-    == slim :'application/header', locals: { current_dashboard: dashboard, current_action: action }
-    == yield_content :action_header
+    == slim :'application/header'
+    == slim :'application/header_actions'
 
     div.container-fluid
       .row

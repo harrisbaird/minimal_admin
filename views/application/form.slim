@@ -1,17 +1,17 @@
 form method="post"
   input type="hidden" name="_method" value="put"
-  - action.fields.each do |name, field|
-    div.form-group.row class=('has-danger' if record.errors.keys.include?(name))
+  - @action.fields.each do |name, field|
+    div.form-group.row class=('has-danger' if @record.errors.keys.include?(name))
       label.col-sm-2.col-form-label.text-xs-right for=(form_field_id(name)) = field_label(field, name)
       div.col-sm-8
-        == field.render(self, name, record, locals)
-        - if record.errors.keys.include?(name)
+        == field.render(self, name, @record, locals)
+        - if @record.errors.keys.include?(name)
           div.form-control-feedback
             => field_label(field, name)
-            = record.errors[name].join(', ')
+            = @record.errors[name].join(', ')
         - if field.show_required?
           p.form-text.text-muted
-            = required_fields.include?(name) ? 'Required' : 'Optional'
+            = @dashboard.required_fields.include?(name) ? 'Required' : 'Optional'
 
   div.form-group.row
     div.col-sm-10.offset-sm-2
@@ -19,6 +19,6 @@ form method="post"
         i.fa.fa-check>
         | Save
       button.btn.btn-primary> type="submit" name="_add_another" Save and add another
-      a.btn.btn-danger role="button" href=(path_for(dashboard, :index))
+      a.btn.btn-danger role="button" href=(path_for_dashboard(@dashboard, :index))
         i.fa.fa-times>
         | Cancel

@@ -11,12 +11,8 @@ module MinimalAdmin
         raise NotImplementedError
       end
 
-      # :index, :show, :form
+      # :show, :form
       def template_type
-        raise NotImplementedError
-      end
-
-      def controller(app)
         raise NotImplementedError
       end
 
@@ -24,22 +20,26 @@ module MinimalAdmin
         [:get]
       end
 
+      def controller(app)
+      end
+
       def setup_routes(app)
         action = self
         http_methods.each do |http_method|
-          path = MinimalAdmin.path_for(@dashboard, self, ':id')
+          path = MinimalAdmin::Routing.path_for_action(self, ':id')
           app.send(http_method, path) do
+            @dashboard = action.dashboard
+            @action = action
+            action.load_records(self)
             action.controller(self)
+            render_assets(action.fields.values)
+            slim(action.template_path)
           end
         end
       end
 
       def resource_name
         self.class.to_s.demodulize.underscore
-      end
-
-      def route
-        resource_name
       end
 
       def label
@@ -50,36 +50,26 @@ module MinimalAdmin
         render_template(app, options)
       end
 
-      attr_reader :dashboard, :fields
-
-      private
-
-      def render_template(app, options = {})
-        options = {
-          dashboard: @dashboard,
-          action: self,
-          adapter: @dashboard.adapter,
-          required_fields: @dashboard.adapter.required_fields
-        }.merge(options)
-        app.render_assets(@fields.values)
-        app.slim(template_path, locals: options)
-      end
-
       def template_path
         "action/#{resource_name}".to_sym
       end
 
-      def find_record(app)
-        record = @dashboard.adapter.find(app.params[:id])
-        return record unless record.nil?
-
-        app.flash[:error] = "#{@dashboard.label} with id '#{app.params[:id]}' could not be found"
-        app.redirect(app.path_for(@dashboard, :index))
+      def load_records(app)
+        case type
+        when :collection
+          page = (app.params[:page] || 1).to_i
+          eager_load_fields = fields.keys & @dashboard.model.associations
+          dataset = @dashboard.adapter.paginate(page)
+          records = dataset.eager(eager_load_fields).all
+          app.instance_variable_set('@dataset', dataset)
+          app.instance_variable_set('@records', records)
+        when :record
+          record = @dashboard.adapter.find(app.params[:id])
+          app.instance_variable_set('@record', record)
+        end
       end
 
-      def eager_load_fields
-        @fields.keys & @dashboard.model.associations
-      end
+      attr_reader :dashboard, :fields
     end
   end
 end

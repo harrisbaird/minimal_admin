@@ -15,5 +15,5 @@ table.table.table-hover
             ul.nav.nav-inline
               - dashboard.actions_for(:record).each do |action|
                 li.nav-item
-                  a.nav-link href="#{path_for(dashboard, action, record.id)}"
+                  a.nav-link href="#{path_for_record(record, action)}"
                     = action.label

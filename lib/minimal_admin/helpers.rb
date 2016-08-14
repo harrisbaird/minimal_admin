@@ -2,10 +2,6 @@ module MinimalAdmin
   module Helpers
     ASSET_TYPES = [:stylesheets, :javascripts].freeze
 
-    def path_for(dashboard, action, record_id = nil)
-      MinimalAdmin.path_for(dashboard, action, record_id)
-    end
-
     def field_label(field, name)
       field.label || name.to_s.humanize
     end
@@ -44,16 +40,6 @@ module MinimalAdmin
       else
         record_str
       end
-    end
-
-    def render_action_header(dashboard, action, record_id = nil)
-      type = record_id.present? ? :record : :collection
-      slim :'application/header_actions', locals: {
-        dashboard: dashboard,
-        action: action,
-        type: type,
-        record_id: record_id
-      }
     end
 
     def form_field_name(name)

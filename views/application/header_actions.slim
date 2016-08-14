@@ -1,6 +1,10 @@
 .navbar.navbar-light.bg-faded.action-bar
   ul.nav.navbar-nav
-    - dashboard.actions_for(type).each do |nav_action|
+    - @dashboard.actions_for(@action.type).each do |action|
       li.nav-item
-        a.nav-link href=(path_for(dashboard, nav_action, record_id)) class=('active' if action == nav_action)
-          = nav_action.label
+        - if @record
+          a.nav-link href=(path_for_record(@record, action)) class=('active' if action == @action)
+            = action.label
+        - else
+          a.nav-link href=(path_for_model(@dashboard.model, action)) class=('active' if action == @action)
+            = action.label

@@ -8,10 +8,6 @@ module MinimalAdmin
       def template_type
         :show
       end
-
-      def controller(app)
-        render(app, record: find_record(app))
-      end
     end
   end
 end

@@ -1,15 +1,12 @@
 - content_for :title do
-  == title_for('Details for', record)
+  == title_for('Details for', @record)
 
-- content_for :action_header do
-  == render_action_header(dashboard, action, record.id)
-
-- action.fields.each do |name, field|
-  - record.send(name).tap do |value|
+- @action.fields.each do |name, field|
+  - @record.send(name).tap do |value|
     - if value.present?
       div.card class="#{name}_field #{field.resource_name}_type"
         div class="card-header" = field_label(field, name)
         - if field.render_in_card_block?
-          div.card-block == field.render(self, name, record, locals.except(:dashboard))
+          div.card-block == field.render(self, name, @record, locals.except(:dashboard))
         - else
-          == field.render(self, name, record, locals.except(:dashboard))
+          == field.render(self, name, @record, locals.except(:dashboard))

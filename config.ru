@@ -37,7 +37,7 @@ class Post < Sequel::Model
   end
 end
 
-DB[:users].import([:id, :name], Array.new(1000) { |i| [i, "Test User #{i}"] })
+DB[:users].import([:id, :name], Array.new(10) { |i| [i, "Test User #{i}"] })
 user_ids = User.select_map(:id)
 DB[:posts].import([:id, :name, :user_id], Array.new(1000) { |i| [i, "Test Post #{i}", user_ids.sample] })
 

@@ -34,18 +34,18 @@ module MinimalAdmin
       private
 
       def render_template(app, name, record, options = {})
+        dashboard = MinimalAdmin.find_dashboard(record.model)
         options = {
           name: name,
           record: record,
           value: record.send(name),
-          field: self,
-          required: options[:required_fields].include?(name)
+          dashboard: dashboard,
+          adapter: dashboard.adapter,
+          required: dashboard.adapter.required_fields,
+          field: self
         }.merge(options)
-        app.slim(template_path(options[:action]), locals: options)
-      end
-
-      def template_path(action)
-        "field/#{resource_name}/#{action.template_type}".to_sym
+        action = app.instance_variable_get('@action')
+        app.slim(:"field/#{resource_name}/#{action.template_type}", locals: options)
       end
     end
   end

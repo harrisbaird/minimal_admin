@@ -15,7 +15,7 @@ module MinimalAdmin
       end
 
       def find(id)
-        @model.with_pk(id)
+        @model.with_pk!(id)
       end
 
       def new(*args)
@@ -34,6 +34,12 @@ module MinimalAdmin
         @model.new.tap(&:valid?).errors.map do |k, v|
           k if v.include?('is not present')
         end.compact
+      end
+
+      def paginate(page, limit = 100)
+        dataset = @model.dataset
+        dataset = dataset.extension(:pagination)
+        dataset.paginate(page, limit)
       end
 
       def search(query)
