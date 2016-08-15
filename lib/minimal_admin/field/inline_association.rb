@@ -7,8 +7,7 @@ module MinimalAdmin
         options[:action] = options[:dashboard].find_action(:index)
         options[:records] = Array.wrap(record.send(name))
         options[:hide_actions] = true
-
-        render_template(app, record, options)
+        super(app, record, options)
       end
 
       def render_in_card_block?

@@ -3,7 +3,7 @@ module MinimalAdmin
     class BelongsTo < Field::Base
       def render(app, record, options = {})
         options[:dashboard] = MinimalAdmin.find_dashboard(record.class)
-        render_template(app, record, options)
+        super(app, record, options)
       end
 
       def parse_value(record, value)

@@ -5,10 +5,18 @@ module MinimalAdmin
         @dashboard = dashboard
         @name = name
         @label = label
+        @default_options = {
+          dashboard: @dashboard,
+          adapter: @dashboard.adapter,
+          field: self,
+          required: required?
+        }
       end
 
       def render(app, record, options = {})
-        render_template(app, record, options)
+        record_options = { record: record, value: record.send(name) }
+        options = @default_options.merge(record_options).merge(options)
+        app.slim(:"application/field", locals: { field: self, options: options })
       end
 
       def parse_value(record, value)
@@ -44,21 +52,6 @@ module MinimalAdmin
       end
 
       attr_reader :name
-
-      private
-
-      def render_template(app, record, options = {})
-        options = {
-          record: record,
-          value: record.send(name),
-          dashboard: @dashboard,
-          adapter: @dashboard.adapter,
-          field: self,
-          required: required?
-        }.merge(options)
-        action = app.instance_variable_get('@action')
-        app.slim(:"field/#{resource_name}/#{action.template_type}", locals: options)
-      end
     end
   end
 end
