@@ -11,8 +11,8 @@ module MinimalAdmin
     helpers MinimalAdmin::Helpers
     helpers MinimalAdmin::Routing
 
-    set :public_folder, File.join(root, '..', '..', 'public')
-    set :views, File.join(root, '..', '..', 'views')
+    set :public_folder, MinimalAdmin.root.join('public').to_s
+    set :views, MinimalAdmin.configuration.views
 
     enable :sessions
     use Rack::Flash, accessorize: [:success, :warning, :error]

@@ -5,6 +5,10 @@ require 'minimal_admin/version'
 require 'minimal_admin/configuration'
 
 module MinimalAdmin
+  def self.root
+    Pathname.new(__dir__).join('..')
+  end
+
   def self.dashboards
     @dashboards ||= []
   end

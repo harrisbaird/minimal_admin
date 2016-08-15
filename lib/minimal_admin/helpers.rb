@@ -2,6 +2,11 @@ module MinimalAdmin
   module Helpers
     ASSET_TYPES = [:stylesheets, :javascripts].freeze
 
+    # Allow templates to be loaded from multiple locations
+    def find_template(views, name, engine, &block)
+      views.each { |v| super(v, name, engine, &block) }
+    end
+
     def main_title
       MinimalAdmin.configuration.title
     end

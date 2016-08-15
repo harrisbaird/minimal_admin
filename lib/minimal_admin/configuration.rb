@@ -11,8 +11,9 @@ module MinimalAdmin
         'https://cdnjs.cloudflare.com/ajax/libs/turbolinks/5.0.0/turbolinks.min.js',
         '/javascripts/global.js'
       ]
+      @views = [MinimalAdmin.root.join('views').to_s]
     end
 
-    attr_accessor :title, :stylesheets, :javascripts
+    attr_accessor :title, :stylesheets, :javascripts, :views
   end
 end
