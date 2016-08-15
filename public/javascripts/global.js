@@ -1,5 +1,3 @@
-Turbolinks.start();
-
 $(document).on('turbolinks:load', function() {
   $('select.association').select2({
     theme: 'bootstrap',

@@ -2,10 +2,6 @@ module MinimalAdmin
   module Helpers
     ASSET_TYPES = [:stylesheets, :javascripts].freeze
 
-    def field_label(field, name)
-      field.label || name.to_s.humanize
-    end
-
     def main_title
       MinimalAdmin.configuration.title
     end
@@ -42,12 +38,12 @@ module MinimalAdmin
       end
     end
 
-    def form_field_name(name)
-      "form[#{name}]"
+    def form_field_name(field)
+      "form[#{field.name}]"
     end
 
-    def form_field_id(name)
-      "field_#{name}"
+    def form_field_id(field)
+      "field_#{field.name}"
     end
 
     def pagination_path(page)

@@ -1,17 +1,17 @@
 form method="post"
   input type="hidden" name="_method" value="put"
-  - @action.fields.each do |name, field|
-    div.form-group.row class=('has-danger' if @record.errors.keys.include?(name))
-      label.col-sm-2.col-form-label.text-xs-right for=(form_field_id(name)) = field_label(field, name)
+  - @action.fields.each do |field|
+    div.form-group.row class=('has-danger' if @record.errors.keys.include?(field.name))
+      label.col-sm-2.col-form-label.text-xs-right for=(form_field_id(field)) = field.label
       div.col-sm-8
-        == field.render(self, name, @record, locals)
-        - if @record.errors.keys.include?(name)
+        == field.render(self, @record, locals)
+        - if @record.errors.keys.include?(field.name)
           div.form-control-feedback
-            => field_label(field, name)
-            = @record.errors[name].join(', ')
+            => field.label
+            = @record.errors[field.name].join(', ')
         - if field.show_required?
           p.form-text.text-muted
-            = @dashboard.required_fields.include?(name) ? 'Required' : 'Optional'
+            = field.required? ? 'Required' : 'Optional'
 
   div.form-group.row
     div.col-sm-10.offset-sm-2

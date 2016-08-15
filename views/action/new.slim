@@ -1,7 +1,4 @@
 - content_for :title do
-  == title_for('New', record)
+  = "New #{@dashboard.label}"
 
-- content_for :action_header do
-  == render_action_header(dashboard, action)
-
-== slim :'application/form', locals: locals
+== slim :'application/form'

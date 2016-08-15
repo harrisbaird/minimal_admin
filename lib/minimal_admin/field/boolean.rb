@@ -1,7 +1,7 @@
 module MinimalAdmin
   module Field
     class Boolean < Field::Base
-      def parse_value(record, name, value)
+      def parse_value(record, value)
         value == '1'
       end
 

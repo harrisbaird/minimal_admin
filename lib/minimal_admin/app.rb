@@ -3,6 +3,7 @@ require 'sinatra/json'
 require 'sinatra/content_for'
 require 'rack/flash'
 require 'minimal_admin/helpers'
+require 'minimal_admin/routing'
 
 module MinimalAdmin
   class App < Sinatra::Base

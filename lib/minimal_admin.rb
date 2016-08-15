@@ -24,12 +24,10 @@ module MinimalAdmin
 end
 
 require 'minimal_admin/base_dashboard'
-require 'minimal_admin/routing'
 
 require 'minimal_admin/adapter/sequel'
 
 require 'minimal_admin/action/base'
-require 'minimal_admin/action/mutate_base'
 require 'minimal_admin/action/delete'
 require 'minimal_admin/action/edit'
 require 'minimal_admin/action/index'

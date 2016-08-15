@@ -1,12 +1,12 @@
 module MinimalAdmin
   module Field
     class BelongsTo < Field::Base
-      def render(app, name, record, options = {})
+      def render(app, record, options = {})
         options[:dashboard] = MinimalAdmin.find_dashboard(record.class)
-        render_template(app, name, record, options)
+        render_template(app, record, options)
       end
 
-      def parse_value(record, name, value)
+      def parse_value(record, value)
         User.with_pk(value)
       end
 

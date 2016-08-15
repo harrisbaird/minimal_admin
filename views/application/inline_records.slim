@@ -1,15 +1,15 @@
 table.table.table-hover
   thead
-    - action.fields.each do |name, field|
-      th = field_label(field, name)
+    - action.fields.each do |field|
+      th = field.label
     - unless hide_actions
       th.actions
   tbody
     - records.each do |record|
       tr
-        - action.fields.each do |name, field|
-          td class="#{name}_field #{field.resource_name}_type"
-            == field.render(self, name, record, locals.except(:record, :value))
+        - action.fields.each do |field|
+          td class="#{field.name}_field #{field.resource_name}_type"
+            == field.render(self, record, locals.except(:record, :value))
         - unless hide_actions
           td.actions
             ul.nav.nav-inline

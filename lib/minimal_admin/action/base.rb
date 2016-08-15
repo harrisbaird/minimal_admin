@@ -1,6 +1,10 @@
+require 'minimal_admin/routing'
+
 module MinimalAdmin
   module Action
     class Base
+      include Routing
+
       def initialize(dashboard, fields = {})
         @dashboard = dashboard
         @fields = fields
@@ -26,13 +30,13 @@ module MinimalAdmin
       def setup_routes(app)
         action = self
         http_methods.each do |http_method|
-          path = MinimalAdmin::Routing.path_for_action(self, ':id')
+          path = path_for_action(self, ':id')
           app.send(http_method, path) do
             @dashboard = action.dashboard
             @action = action
             action.load_records(self)
             action.controller(self)
-            render_assets(action.fields.values)
+            render_assets(action.fields)
             slim(action.template_path)
           end
         end
@@ -58,7 +62,7 @@ module MinimalAdmin
         case type
         when :collection
           page = (app.params[:page] || 1).to_i
-          eager_load_fields = fields.keys & @dashboard.model.associations
+          eager_load_fields = fields.map(&:name) & @dashboard.model.associations
           dataset = @dashboard.adapter.paginate(page)
           records = dataset.eager(eager_load_fields).all
           app.instance_variable_set('@dataset', dataset)

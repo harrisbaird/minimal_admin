@@ -1,27 +1,33 @@
 class UserDashboard < MinimalAdmin::BaseDashboard
   MODEL = User
 
-  INDEX_FIELDS = {
-    id: Field::PrimaryKey.new,
-    name: Field::String.new
-  }.freeze
+  def index_fields
+    @index_fields ||= [
+      Field::PrimaryKey.new(self, :id),
+      Field::String.new(self, :id)
+    ]
+  end
 
-  SHOW_FIELDS = {
-    id: Field::PrimaryKey.new,
-    name: Field::String.new,
-    posts: Field::InlineAssociation.new
-  }
+  def show_fields
+    @show_fields ||= [
+      Field::PrimaryKey.new(self, :id),
+      Field::String.new(self, :name),
+      Field::InlineAssociation.new(self, :posts)
+    ]
+  end
 
-  FORM_FIELDS = {
-    name: Field::String.new
-  }.freeze
+  def form_fields
+    @form_fields ||= [
+      Field::String.new(self, :name)
+    ]
+  end
 
   def actions
     @actions ||= [
-      Action::Index.new(self, INDEX_FIELDS),
-      Action::Show.new(self, SHOW_FIELDS),
-      Action::Edit.new(self, FORM_FIELDS),
-      Action::New.new(self, FORM_FIELDS),
+      Action::Index.new(self, index_fields),
+      Action::Show.new(self, show_fields),
+      Action::Edit.new(self, form_fields),
+      Action::New.new(self, form_fields),
       Action::Delete.new(self)
     ]
   end

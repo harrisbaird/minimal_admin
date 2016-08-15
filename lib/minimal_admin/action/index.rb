@@ -12,10 +12,6 @@ module MinimalAdmin
       def label
         'List'
       end
-
-      def route
-        nil
-      end
     end
   end
 end

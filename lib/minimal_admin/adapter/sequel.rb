@@ -30,10 +30,8 @@ module MinimalAdmin
         @model.association_reflection(name)[:class_name]
       end
 
-      def required_fields
-        @model.new.tap(&:valid?).errors.map do |k, v|
-          k if v.include?('is not present')
-        end.compact
+      def required?(name)
+        required_fields.include?(name)
       end
 
       def paginate(page, limit = 100)
@@ -49,8 +47,14 @@ module MinimalAdmin
 
       private
 
+      def required_fields
+        @required_fields ||= @model.new.tap(&:valid?).errors.map do |k, v|
+          k if v.include?('is not present')
+        end.compact
+      end
+
       def search_fields
-        @model.db_schema.map do |k, v|
+        @search_fields ||= @model.db_schema.map do |k, v|
           k if SEARCH_TYPES.include?(v[:type])
         end.compact
       end

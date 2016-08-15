@@ -15,10 +15,6 @@ module MinimalAdmin
       @model ||= MinimalAdmin::Adapter::Sequel.new(model)
     end
 
-    def required_fields
-      adapter.required_fields
-    end
-
     def setup_routes(app)
       actions.each { |action| action.setup_routes(app) }
     end

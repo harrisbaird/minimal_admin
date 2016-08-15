@@ -1,12 +1,22 @@
 module MinimalAdmin
   module Field
     class Base
-      def render(app, name, record, options = {})
-        render_template(app, name, record, options)
+      def initialize(dashboard, name, label: nil)
+        @dashboard = dashboard
+        @name = name
+        @label = label
       end
 
-      def parse_value(record, name, value)
+      def render(app, record, options = {})
+        render_template(app, record, options)
+      end
+
+      def parse_value(record, value)
         value
+      end
+
+      def label
+        @label ||= @name.to_s.humanize
       end
 
       def resource_name
@@ -29,20 +39,22 @@ module MinimalAdmin
         true
       end
 
-      attr_reader :label, :hint
+      def required?
+        @dashboard.adapter.required?(@name)
+      end
+
+      attr_reader :name
 
       private
 
-      def render_template(app, name, record, options = {})
-        dashboard = MinimalAdmin.find_dashboard(record.model)
+      def render_template(app, record, options = {})
         options = {
-          name: name,
           record: record,
           value: record.send(name),
-          dashboard: dashboard,
-          adapter: dashboard.adapter,
-          required: dashboard.adapter.required_fields,
-          field: self
+          dashboard: @dashboard,
+          adapter: @dashboard.adapter,
+          field: self,
+          required: required?
         }.merge(options)
         action = app.instance_variable_get('@action')
         app.slim(:"field/#{resource_name}/#{action.template_type}", locals: options)
