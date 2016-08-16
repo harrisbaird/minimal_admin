@@ -5,9 +5,11 @@ module MinimalAdmin
     class Base
       include Routing
 
-      def initialize(dashboard, fields = {})
+      def initialize(dashboard, fields = {}, order: :id, order_reverse: true)
         @dashboard = dashboard
         @fields = fields
+        @order = order
+        @order_reverse = order_reverse
       end
 
       # :collection, :record, :root
@@ -34,7 +36,7 @@ module MinimalAdmin
           app.send(http_method, path) do
             @dashboard = action.dashboard
             @action = action
-            action.load_records(self)
+            action.load(self)
             action.controller(self)
             render_assets(action.fields)
             slim(action.template_path)
@@ -58,22 +60,37 @@ module MinimalAdmin
         "action/#{resource_name}".to_sym
       end
 
-      def load_records(app)
+      def order(dataset)
+        @order_reverse ? dataset.reverse(@order) : dataset.order(@order)
+      end
+
+      def load(app)
         case type
         when :collection
-          page = (app.params[:page] || 1).to_i
-          eager_load_fields = fields.map(&:name) & @dashboard.model.associations
-          dataset = @dashboard.adapter.paginate(page)
-          records = dataset.eager(eager_load_fields).all
-          app.instance_variable_set('@dataset', dataset)
-          app.instance_variable_set('@records', records)
+          load_records(app)
         when :record
-          record = @dashboard.adapter.find(app.params[:id])
-          app.instance_variable_set('@record', record)
+          load_record(app)
         end
       end
 
       attr_reader :dashboard, :fields
+
+      private
+
+      def load_record(app)
+        record = @dashboard.adapter.find(app.params[:id])
+        app.instance_variable_set('@record', record)
+      end
+
+      def load_records(app)
+        page = (app.params[:page] || 1).to_i
+        eager_load_fields = fields.map(&:name) & @dashboard.model.associations
+        dataset = @dashboard.adapter.paginate(page)
+        dataset = order(dataset)
+        records = dataset.eager(eager_load_fields).all
+        app.instance_variable_set('@dataset', dataset)
+        app.instance_variable_set('@records', records)
+      end
     end
   end
 end
