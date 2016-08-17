@@ -11,7 +11,6 @@ module MinimalAdmin
     helpers MinimalAdmin::Helpers
     helpers MinimalAdmin::Routing
 
-    set :public_folder, MinimalAdmin.root.join('public').to_s
     set :views, MinimalAdmin.configuration.views
 
     enable :sessions

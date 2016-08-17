@@ -19,6 +19,10 @@ module MinimalAdmin
         app.slim(:"application/field", locals: { field: self, options: options })
       end
 
+      def assets(app)
+        @assets ||= app.slim(:"field/#{resource_name}/assets") rescue ''
+      end
+
       def parse_value(record, value)
         value
       end
@@ -29,14 +33,6 @@ module MinimalAdmin
 
       def resource_name
         self.class.to_s.demodulize.underscore
-      end
-
-      def stylesheets
-        []
-      end
-
-      def javascripts
-        []
       end
 
       def render_in_card_block?

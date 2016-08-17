@@ -1,7 +1,5 @@
 module MinimalAdmin
   module Helpers
-    ASSET_TYPES = [:stylesheets, :javascripts].freeze
-
     # Allow templates to be loaded from multiple locations
     def find_template(views, name, engine, &block)
       views.each { |v| super(v, name, engine, &block) }
@@ -16,19 +14,11 @@ module MinimalAdmin
       "#{prefix} #{record.class.name} #{title}"
     end
 
-    def global_assets
-      ASSET_TYPES.each_with_object({}) do |type, hsh|
-        hsh[type] = MinimalAdmin.configuration.send(type)
-      end
-    end
-
     def render_assets(fields = [])
-      ASSET_TYPES.each do |type|
-        content_for(type) do
-          assets = fields.flat_map(&type).uniq
-          global = global_assets[type]
-          slim(type, locals: { urls: global + assets })
-        end
+      content_for(:assets) do
+        fields.map do |field|
+          field.assets(self)
+        end.join
       end
     end
 
