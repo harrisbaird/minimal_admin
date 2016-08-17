@@ -4,7 +4,7 @@
 - @action.fields.each do |field|
   - @record.send(field.name).tap do |value|
     - if value.present?
-      div.card class="#{field.name}_field #{field.resource_name}_type"
+      div.card class=(show_field_class(field))
         div class="card-header" = field.label
         - if field.render_in_card_block?
           div.card-block == field.render(self, @record, locals.except(:dashboard))
