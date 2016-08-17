@@ -33,13 +33,12 @@ module MinimalAdmin
     end
 
     def record_label(record)
-      return 'New #{record.class.name}' if record.nil?
-      record_str = "#{record.class.name} \##{record.id}"
-
-      if record.respond_to?(:name)
-        "#{record.name} (#{record_str})"
+      if record.nil?
+        'New #{record.class.name}'
+      elsif record.respond_to?(:name)
+        record.name
       else
-        record_str
+        "#{record.class.name} \##{record.id}"
       end
     end
 
