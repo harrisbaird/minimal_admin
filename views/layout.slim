@@ -11,6 +11,7 @@ html
       = main_title
     == yield_content :stylesheets
     == yield_content :javascripts
+    link rel="shortcut icon"type="image/x-icon" href="data:image/x-icon;,"
   body
     == slim :'application/header'
     == slim :'application/header_actions'
