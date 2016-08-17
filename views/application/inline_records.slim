@@ -1,14 +1,14 @@
 table.table.table-hover
   thead
     - action.fields.each do |field|
-      th class="#{field.name}-field #{field.resource_name}-type" = field.label
+      th class=(table_field_class(field)) = field.label
     - unless hide_actions
       th.actions
   tbody
     - records.each do |record|
       tr
         - action.fields.each do |field|
-          td class="#{field.name}-field #{field.resource_name}-type"
+          td class=(table_field_class(field))
             == field.render(self, record, locals.except(:record, :value))
         - unless hide_actions
           td.actions

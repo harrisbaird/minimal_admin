@@ -43,6 +43,12 @@ module MinimalAdmin
       end
     end
 
+    def table_field_class(field)
+      field_name = field.name.to_s.dasherize
+      resource_name = field.resource_name.to_s.dasherize
+      "#{field_name}-field #{resource_name}-type"
+    end
+
     def form_field_name(field)
       "form[#{field.name}]"
     end
