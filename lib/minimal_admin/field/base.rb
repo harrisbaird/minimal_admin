@@ -1,16 +1,17 @@
 module MinimalAdmin
   module Field
     class Base
-      def initialize(dashboard, name, label: nil)
+      # FIXME: Option handling needs to be simplified
+      def initialize(dashboard, name, options = {})
         @dashboard = dashboard
         @name = name
-        @label = label
+        options.each { |k, v| instance_variable_set("@#{k}", v) }
         @default_options = {
           dashboard: @dashboard,
           adapter: @dashboard.adapter,
           field: self,
           required: required?
-        }
+        }.merge(options)
       end
 
       def render(app, record, options = {})
