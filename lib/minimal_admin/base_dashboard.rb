@@ -40,6 +40,10 @@ module MinimalAdmin
       []
     end
 
+    def visible?
+      true
+    end
+
     private
 
     def demodulized_name
