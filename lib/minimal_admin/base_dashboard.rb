@@ -20,7 +20,7 @@ module MinimalAdmin
     end
 
     def label
-      @label ||= demodulized_name.humanize
+      @label ||= resource_name.humanize
     end
 
     def resource_name
